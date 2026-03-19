@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love ❤️</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#fdfbfb,#ebedee);
+  text-align:center;
+  overflow-x:hidden;
+  transition:0.5s;
+}
+.dark{background:#0f172a;color:white;}
+
+#bulb{position:fixed;top:20px;right:20px;font-size:30px;cursor:pointer;z-index:10;}
+
+#intro{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:22px;
+  transition:1s;
+}
+.hide{opacity:0;}
+
+.scene{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  opacity:0;
+  transition:1.2s;
+}
+.active{opacity:1;}
+
+.bee{font-size:60px;animation:float 2s infinite;}
+@keyframes float{50%{transform:translateY(-10px)}}
+
+.heart{font-size:80px;animation:pulse 1.5s infinite;}
+@keyframes pulse{50%{transform:scale(1.2)}}
+
+.section{margin-top:120vh;}
+
+img{
+  max-width:260px;
+  border-radius:20px;
+  margin-top:20px;
+  box-shadow:0 15px 30px rgba(0,0,0,0.3);
+  opacity:0;
+  transform:scale(0.8);
+  transition:1s;
+}
+.show{opacity:1;transform:scale(1);}
+
+.heart-bg{
+  position:fixed;
+  bottom:-20px;
+  animation:rise 4s linear forwards;
+}
+@keyframes rise{
+  to{transform:translateY(-110vh);opacity:0}
+}
+
+.confetti{
+  position:fixed;
+  width:8px;height:8px;
+  top:-10px;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(100vh);opacity:0}
+}
+
+button{
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="bulb">💡</div>
+
+<div id="intro">
+  let's turn the lights off first 👉 💡
+</div>
+
+<!-- SCENES -->
+<div class="scene" id="s1"><div class="bee">🐝</div><h1>Making something special for you...</h1></div>
+<div class="scene" id="s2"><div class="heart">❤️</div><h1>A heart, just for you</h1></div>
+<div class="scene" id="s3"><div class="bee">🐝</div><h1>I reached somewhere… 🍯</h1></div>
+<div class="scene" id="s4"><div class="bee">🐝🎀</div><h1>Hey… do you know what day it is?</h1></div>
+<div class="scene" id="s5"><h1>Come inside 💛</h1></div>
+<div class="scene" id="s6"><h1>🎈🎁 Decorated just for you 🎉</h1></div>
+<div class="scene" id="s7">
+  <h1>Happy 19th Birthday My Love ❤️</h1>
+  <button onclick="goToVoice()">🐝🎀 Now come with me ↓</button>
+</div>
+
+<!-- VOICE -->
+<div id="voiceSection" class="section">
+  <h1>Listen this first 💖</h1>
+  <button onclick="playAudio()">🎤 Play My Message</button>
+  <div id="afterVoice" style="opacity:0;transition:1s;margin-top:20px;">
+    🐝🎀 Lessgo to the final destination... are you ready?
+  </div>
+</div>
+
+<!-- IMAGE -->
+<div id="imageSection" class="section">
+  <h1>Shushh.. scan this in private 💖</h1>
+
+  <div style="text-align:center;">
+  <img src="photo.png" style="
+    max-width:260px;
+    border-radius:20px;
+    margin-top:20px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.3);
+    opacity:1;
+  ">
+  </div>
+
+</div>
+<audio id="voice" src="voice.mp3"></audio>
+
+<script>
+
+// LIGHT + START
+let started=false;
+bulb.onclick=()=>{
+ document.body.classList.toggle("dark");
+
+ if(!started){
+  document.getElementById("intro").classList.add("hide");
+  document.getElementById("s1").classList.add("active");
+  startScenes();
+  hearts();
+  started=true;
+ }
+};
+
+// HEART BG
+function hearts(){
+ setInterval(()=>{
+  if(document.body.classList.contains("dark")){
+   let h=document.createElement("div");
+   h.className="heart-bg";
+   h.innerText="❤️";
+   h.style.left=Math.random()*100+"%";
+   document.body.appendChild(h);
+  }
+ },300);
+}
+
+// SCENES
+let current=1;
+function startScenes(){
+ setInterval(()=>{
+  if(current<7){
+   document.getElementById("s"+current).classList.remove("active");
+   current++;
+   document.getElementById("s"+current).classList.add("active");
+  }
+ },3000);
+}
+
+// VOICE
+function goToVoice(){
+ document.getElementById("voiceSection").scrollIntoView({behavior:"smooth"});
+}
+
+function playAudio(){
+ let audio=document.getElementById("voice");
+ audio.play();
+
+ audio.onended=()=>{
+  document.getElementById("afterVoice").style.opacity=1;
+
+  setTimeout(()=>{
+   goToImage();
+  },2500);
+ };
+}
+
+// IMAGE
+function goToImage(){
+ document.getElementById("imageSection").scrollIntoView({behavior:"smooth"});
+
+ setTimeout(()=>{
+  setTimeout(()=>{
+  let img = document.getElementById("photo");
+  if(img){
+    img.style.opacity = "1";
+    img.style.transform = "scale(1)";
+  }
+}, 500);
+  confetti();
+ },500);
+}
+
+// CONFETTI
+function confetti(){
+ for(let i=0;i<70;i++){
+  let c=document.createElement("div");
+  c.className="confetti";
+  c.style.left=Math.random()*100+"%";
+  c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+  document.body.appendChild(c);
+ }
+}
+
+</script>
+
+</body>
+</html>
